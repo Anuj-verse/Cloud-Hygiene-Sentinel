@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.venv/
+venv/
+env/
+ENV/
+pip-wheel-metadata/
+build/
+dist/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform/.terraform.lock.hcl
+terraform/.terraform.tfstate.lock.info
+terraform/localstack_providers_override.tf
+terraform/terraform.tfvars
+terraform/terraform.tfvars.json
+
+# Local/editor noise
+.DS_Store
+.vscode/
+.idea/
