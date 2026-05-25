@@ -15,26 +15,34 @@ This repository contains a production-style solution to the Code & Conscience De
 git clone https://github.com/Anuj-verse/Cloud-Hygiene-Sentinel.git
 cd Cloud-Hygiene-Sentinel
 
-# 2. Start LocalStack
-docker run --rm -d -p 4566:4566 --name localstack \
-  -e SERVICES=ec2,s3,iam,sts \
-  localstack/localstack
+# Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
 
-# Wait ~15 seconds, then verify:
-curl -sf http://localhost:4566/_localstack/health | python3 -m json.tool
+# 2. Start LocalStack
+docker run --rm -d -p 4566:4566 \
+  -e SERVICES=ec2,s3,iam,sts \
+  -e DEFAULT_REGION=us-east-1 \
+  -e AWS_ACCESS_KEY_ID=test \
+  -e AWS_SECRET_ACCESS_KEY=test \
+  -e LOCALSTACK_AUTH_TOKEN="Your localstack_auth_token if you want to use" \
+  --name localstack localstack/localstack:latest
+
+# Wait ~10 seconds, then verify:
+curl -sf http://localhost:4566/_localstack/health | python3 -m json.tool | grep -E '"ec2"|"s3"'
 
 # 3. Install tflocal and apply Terraform
 pip install terraform-local==0.18.0
 cd terraform/
 tflocal init
-tflocal apply -auto-approve
+tflocal apply -auto-approve -var="owner=local-test" -var="environment=staging"
 cd ..
 
 # 4. Install Janitor dependencies
 pip install -r janitor/requirements.txt
 
 # 5. Run unit tests (no LocalStack needed — uses Moto)
-cd janitor && pytest tests/ -v && cd ..
+pytest janitor/tests/ -v --tb=short
 
 # 6. Run the Janitor in dry-run mode against LocalStack
 python janitor/janitor.py \
