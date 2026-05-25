@@ -12,8 +12,8 @@ This repository contains a production-style solution to the Code & Conscience De
 
 ```bash
 # 1. Clone
-git clone https://github.com/<your-username>/nimbuskart-cost-janitor.git
-cd nimbuskart-cost-janitor
+git clone https://github.com/Anuj-verse/Cloud-Hygiene-Sentinel.git
+cd Cloud-Hygiene-Sentinel
 
 # 2. Start LocalStack
 docker run --rm -d -p 4566:4566 --name localstack \
